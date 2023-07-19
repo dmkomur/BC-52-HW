@@ -29,7 +29,7 @@ async function removeContact(contactId) {
   return contact;
 }
 
-async function addContact(name, email, phone) {
+async function addContact({ name, email, phone }) {
   const data = await listContacts();
   const newContact = {
     id: nanoid(),
