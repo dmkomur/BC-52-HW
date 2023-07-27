@@ -1,14 +1,14 @@
 import { Schema, model } from "mongoose";
 import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
-import { string } from "joi";
+import Joi from "joi";
 
 export const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const userSchema = new Schema(
   {
-    name: { type: string, required: true },
-    email: { type: string, required: true, match: emailRegexp, unique: true },
-    password: { type: string, required: true, minlegth: 6 },
+    name: { type: String, required: true },
+    email: { type: String, required: true, match: emailRegexp, unique: true },
+    password: { type: String, required: true, minlegth: 6 },
   },
   { versionKey: false, timestamps: true }
 );
