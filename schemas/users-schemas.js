@@ -6,6 +6,9 @@ const userSignupSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .default("starter"),
 });
 
 const userSigninSchema = Joi.object({
