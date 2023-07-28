@@ -6,7 +6,11 @@ import { validateBody } from "../../decorators/index.js";
 
 import contactsSchema from "../../schemas/contacts-schema.js";
 
-import { isEmptyBody, isValidId } from "../../middlewares/index.js";
+import {
+  isEmptyBody,
+  isValidId,
+  authenticate,
+} from "../../middlewares/index.js";
 
 const contactAddValidate = validateBody(contactsSchema.contactAddSchema);
 const contactUpdateFavorite = validateBody(
@@ -14,6 +18,8 @@ const contactUpdateFavorite = validateBody(
 );
 
 const contactsRouter = express.Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get("/", contactsController.getAll);
 
