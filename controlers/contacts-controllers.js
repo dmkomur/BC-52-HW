@@ -1,6 +1,9 @@
 import Contact from "../models/contact.js";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
+import fs from "fs/promises";
+import path from "path";
+import jimp from "jimp";
 
 const getAll = async (req, res, next) => {
   const { _id: owner } = req.user;
@@ -22,9 +25,20 @@ const getById = async (req, res, next) => {
   res.json(result);
 };
 
+const avatarsDir = path.resolve("public", "avatars");
+
 const add = async (req, res, next) => {
   const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body, owner });
+  const { path: oldPath, filename } = req.file;
+
+  const image = await jimp.read(oldPath);
+  await image.cover(250, 250).writeAsync(oldPath);
+
+  const avatarName = `${owner}_${filename}`;
+  const newPath = path.join(avatarsDir, avatarName);
+  await fs.rename(oldPath, newPath);
+  const avatarURL = path.join("avatars", avatarName);
+  const result = await Contact.create({ ...req.body, avatarURL, owner });
   res.status(201).json(result);
 };
 
