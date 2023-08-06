@@ -1,7 +1,7 @@
 import express from "express";
 import { validateBody } from "../../decorators/index.js";
 import authControllers from "../../controlers/auth-controllers.js";
-import { authenticate } from "../../middlewares/index.js";
+import { authenticate, upload } from "../../middlewares/index.js";
 import usersSchemas from "../../schemas/users-schemas.js";
 
 const userSignupValidate = validateBody(usersSchemas.userSignupSchema);
@@ -16,5 +16,12 @@ authRouter.post("/signin", userSigninValidate, authControllers.signin);
 authRouter.get("/current", authenticate, authControllers.getCurrent);
 
 authRouter.post("/signout", authenticate, authControllers.signout);
+
+authRouter.patch(
+  "/users/avatars",
+  authenticate,
+  upload.single("avatar"),
+  authControllers.changeAvatar
+);
 
 export default authRouter;
