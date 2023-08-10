@@ -6,10 +6,15 @@ import usersSchemas from "../../schemas/users-schemas.js";
 
 const userSignupValidate = validateBody(usersSchemas.userSignupSchema);
 const userSigninValidate = validateBody(usersSchemas.userSigninSchema);
+const userEmailValidate = validateBody(usersSchemas.resendVerifyEmail);
 
 const authRouter = express.Router();
 
 authRouter.post("/signup", userSignupValidate, authControllers.signup);
+
+authRouter.get("/verify/:verificationCode", authController.verify);
+
+authRouter.post("/verify", userEmailValidate, authController.resendVerifyEmail);
 
 authRouter.post("/signin", userSigninValidate, authControllers.signin);
 
